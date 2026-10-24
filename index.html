@@ -9,7 +9,7 @@
 body {
     font-family: Arial, sans-serif;
     background: #f5f5f5;
-    max-width: 600px;
+    max-width: 700px;
     margin: auto;
     padding: 20px;
 }
@@ -19,15 +19,14 @@ body {
     border-radius: 12px;
     padding: 20px;
     margin-top: 20px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 8px rgba(0,0,0,.1);
 }
 
 h1 {
     text-align: center;
 }
 
-select,
-button {
+select, button {
     width: 100%;
     padding: 14px;
     margin-top: 10px;
@@ -35,14 +34,10 @@ button {
 }
 
 button {
-    background: #0a7cff;
+    background: #0078ff;
     color: white;
     border: none;
     border-radius: 8px;
-}
-
-button:active {
-    opacity: .8;
 }
 
 .restaurant {
@@ -51,24 +46,25 @@ button:active {
 }
 
 .order {
-    margin-top: 10px;
+    margin-top: 15px;
     font-size: 18px;
 }
 
 .stats {
     margin-top: 15px;
-    font-size: 16px;
 }
 </style>
 </head>
-
 <body>
 
 <div class="card">
 
 <h1>🍔 Mike's Fast Food Picker</h1>
 
-<label><strong>I'm At:</strong></label>
+<p>
+Rules: Real food. No fries. No drinks. No apple slices.
+Mostly 40g+ protein and roughly 650-900 calories.
+</p>
 
 <select id="restaurant">
     <option value="Anywhere">Anywhere</option>
@@ -83,7 +79,7 @@ button:active {
 <button onclick="randomMeal()">🎲 Random Meal</button>
 
 <div id="result" class="card">
-Select a restaurant and hit Random Meal.
+Hit Random Meal.
 </div>
 
 </div>
@@ -92,120 +88,70 @@ Select a restaurant and hit Random Meal.
 
 const meals = {
 
-  "McDonald's": [
-    {
-      name: "2 McDoubles",
-      protein: 44,
-      calories: 800
-    },
-    {
-      name: "McDouble + 10 Piece Nuggets",
-      protein: 48,
-      calories: 810
-    },
-    {
-      name: "Double Cheeseburger + McDouble",
-      protein: 44,
-      calories: 750
-    }
-  ],
+"McDonald's": [
+{ name: "2 McDoubles", protein: 44, calories: 800 },
+{ name: "McDouble + 10 Piece Nuggets", protein: 48, calories: 810 },
+{ name: "Double Cheeseburger + McDouble", protein: 44, calories: 750 },
+{ name: "2 Double Cheeseburgers", protein: 50, calories: 900 },
+{ name: "Quarter Pounder with Cheese + McDouble", protein: 43, calories: 780 },
+{ name: "Triple Cheeseburger + McDouble", protein: 50, calories: 860 },
+{ name: "2 McDoubles + Extra Patty", protein: 55, calories: 890 }
+],
 
-  "Whataburger": [
-    {
-      name: "Double Meat Whataburger (No Mayo, No Cheese)",
-      protein: 48,
-      calories: 760
-    },
-    {
-      name: "Sweet & Spicy Double (No Mayo)",
-      protein: 45,
-      calories: 850
-    },
-    {
-      name: "Triple Meat Whataburger (No Mayo, No Cheese)",
-      protein: 60,
-      calories: 900
-    }
-  ],
+"Whataburger": [
+{ name: "Double Meat Whataburger (No Mayo, No Cheese)", protein: 48, calories: 760 },
+{ name: "Sweet & Spicy Double (No Mayo)", protein: 45, calories: 850 },
+{ name: "Triple Meat Whataburger (No Mayo, No Cheese)", protein: 60, calories: 900 },
+{ name: "Patty Melt", protein: 43, calories: 900 },
+{ name: "Mushroom Swiss Double", protein: 44, calories: 860 },
+{ name: "Double Meat Jr + Double Meat Jr", protein: 46, calories: 800 },
+{ name: "Double Meat Whataburger (No Mayo)", protein: 48, calories: 820 }
+],
 
-  "Wendy's": [
-    {
-      name: "Dave's Double",
-      protein: 49,
-      calories: 860
-    },
-    {
-      name: "Dave's Double (No Mayo)",
-      protein: 49,
-      calories: 790
-    },
-    {
-      name: "Bacon Double Stack + Jr Cheeseburger Deluxe",
-      protein: 42,
-      calories: 780
-    }
-  ],
+"Wendy's": [
+{ name: "Dave's Double", protein: 49, calories: 860 },
+{ name: "Dave's Double (No Mayo)", protein: 49, calories: 790 },
+{ name: "2 Double Stacks", protein: 46, calories: 820 },
+{ name: "Dave's Single + Double Stack", protein: 43, calories: 760 },
+{ name: "Bacon Double Stack + Jr Cheeseburger Deluxe", protein: 42, calories: 780 },
+{ name: "Baconator", protein: 57, calories: 960 },
+{ name: "Dave's Triple", protein: 61, calories: 900 }
+],
 
-  "Burger King": [
-    {
-      name: "Double Whopper (No Mayo)",
-      protein: 42,
-      calories: 850
-    },
-    {
-      name: "2 Double Cheeseburgers",
-      protein: 48,
-      calories: 780
-    },
-    {
-      name: "Whopper + Double Cheeseburger",
-      protein: 47,
-      calories: 890
-    }
-  ],
+"Burger King": [
+{ name: "Double Whopper (No Mayo)", protein: 42, calories: 850 },
+{ name: "2 Double Cheeseburgers", protein: 48, calories: 780 },
+{ name: "Whopper + Double Cheeseburger", protein: 47, calories: 890 },
+{ name: "Texas Double Whopper (No Mayo)", protein: 50, calories: 900 },
+{ name: "2 Bacon Double Cheeseburgers", protein: 50, calories: 850 },
+{ name: "Bacon Double Cheeseburger + Double Cheeseburger", protein: 45, calories: 810 }
+],
 
-  "Chick-fil-A": [
-    {
-      name: "Chicken Sandwich + 8 Count Grilled Nuggets",
-      protein: 50,
-      calories: 730
-    },
-    {
-      name: "Spicy Chicken Sandwich + 8 Count Nuggets",
-      protein: 45,
-      calories: 790
-    },
-    {
-      name: "12 Count Grilled Nuggets + Chicken Sandwich",
-      protein: 55,
-      calories: 700
-    }
-  ],
+"Chick-fil-A": [
+{ name: "Chicken Sandwich + 8 Count Grilled Nuggets", protein: 50, calories: 730 },
+{ name: "Spicy Chicken Sandwich + 8 Count Nuggets", protein: 45, calories: 790 },
+{ name: "12 Count Grilled Nuggets + Chicken Sandwich", protein: 55, calories: 700 },
+{ name: "Chicken Sandwich + 12 Count Nuggets", protein: 50, calories: 830 },
+{ name: "Spicy Deluxe + 8 Count Grilled Nuggets", protein: 47, calories: 760 },
+{ name: "2 Chicken Sandwiches", protein: 56, calories: 880 },
+{ name: "Grilled Club + 8 Count Nuggets", protein: 48, calories: 760 }
+],
 
-  "Sonic": [
-    {
-      name: "SuperSONIC Double Cheeseburger (No Mayo)",
-      protein: 45,
-      calories: 820
-    },
-    {
-      name: "Double SONIC Smasher",
-      protein: 40,
-      calories: 850
-    },
-    {
-      name: "Quarter Pound Double Cheeseburger + Jr Burger",
-      protein: 43,
-      calories: 790
-    }
-  ]
+"Sonic": [
+{ name: "SuperSONIC Double Cheeseburger (No Mayo)", protein: 45, calories: 820 },
+{ name: "Double SONIC Smasher", protein: 40, calories: 850 },
+{ name: "Quarter Pound Double Cheeseburger + Jr Burger", protein: 43, calories: 790 },
+{ name: "SuperSONIC Double Cheeseburger + Jr Cheeseburger", protein: 50, calories: 900 },
+{ name: "Garlic Butter Bacon Cheeseburger", protein: 44, calories: 890 },
+{ name: "2 Quarter Pound Double Cheeseburgers", protein: 54, calories: 880 }
+]
 
 };
 
 function randomMeal() {
 
     const selected =
-      document.getElementById("restaurant").value;
+    document.getElementById("restaurant").value;
 
     let choices = [];
 
@@ -234,19 +180,21 @@ function randomMeal() {
     }
 
     const pick =
-      choices[Math.floor(Math.random() * choices.length)];
+    choices[Math.floor(Math.random() * choices.length)];
 
     document.getElementById("result").innerHTML = `
-      <div class="restaurant">🍔 ${pick.restaurant}</div>
+        <div class="restaurant">
+        🍔 ${pick.restaurant}
+        </div>
 
-      <div class="order">
+        <div class="order">
         ${pick.name}
-      </div>
+        </div>
 
-      <div class="stats">
+        <div class="stats">
         💪 Protein: <strong>${pick.protein}g</strong><br><br>
         🔥 Calories: <strong>${pick.calories}</strong>
-      </div>
+        </div>
     `;
 }
 
