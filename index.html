@@ -3,22 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fast Food Protein Picker</title>
+<title>Mike's Fast Food Picker</title>
 
 <style>
 body {
     font-family: Arial, sans-serif;
-    max-width: 600px;
-    margin: 40px auto;
-    padding: 20px;
     background: #f5f5f5;
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
 }
 
 .card {
     background: white;
-    padding: 20px;
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,.1);
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 h1 {
@@ -28,50 +29,44 @@ h1 {
 select,
 button {
     width: 100%;
-    padding: 12px;
-    margin-top: 12px;
+    padding: 14px;
+    margin-top: 10px;
     font-size: 16px;
 }
 
 button {
-    cursor: pointer;
     background: #0a7cff;
     color: white;
     border: none;
     border-radius: 8px;
 }
 
-button:hover {
-    background: #0068dd;
-}
-
-#result {
-    margin-top: 20px;
-    padding: 15px;
-    border-radius: 8px;
-    background: #eef5ff;
+button:active {
+    opacity: .8;
 }
 
 .restaurant {
-    font-size: 22px;
+    font-size: 24px;
     font-weight: bold;
 }
 
 .order {
-    font-size: 18px;
     margin-top: 10px;
+    font-size: 18px;
 }
 
 .stats {
-    margin-top: 10px;
+    margin-top: 15px;
+    font-size: 16px;
 }
 </style>
 </head>
+
 <body>
 
 <div class="card">
 
-<h1>🍔 Fast Food Picker</h1>
+<h1>🍔 Mike's Fast Food Picker</h1>
 
 <label><strong>I'm At:</strong></label>
 
@@ -79,16 +74,16 @@ button:hover {
     <option value="Anywhere">Anywhere</option>
     <option value="McDonald's">McDonald's</option>
     <option value="Whataburger">Whataburger</option>
-    <option value="Chick-fil-A">Chick-fil-A</option>
     <option value="Wendy's">Wendy's</option>
     <option value="Burger King">Burger King</option>
+    <option value="Chick-fil-A">Chick-fil-A</option>
     <option value="Sonic">Sonic</option>
 </select>
 
 <button onclick="randomMeal()">🎲 Random Meal</button>
 
-<div id="result">
-Pick a restaurant and hit Random Meal.
+<div id="result" class="card">
+Select a restaurant and hit Random Meal.
 </div>
 
 </div>
@@ -96,16 +91,22 @@ Pick a restaurant and hit Random Meal.
 <script>
 
 const meals = {
+
   "McDonald's": [
     {
-      name: "Double Quarter Pounder with Cheese",
-      protein: 48,
-      calories: 740
+      name: "2 McDoubles",
+      protein: 44,
+      calories: 800
     },
     {
-      name: "McDouble + 6 Piece Nuggets",
-      protein: 43,
-      calories: 680
+      name: "McDouble + 10 Piece Nuggets",
+      protein: 48,
+      calories: 810
+    },
+    {
+      name: "Double Cheeseburger + McDouble",
+      protein: 44,
+      calories: 750
     }
   ],
 
@@ -114,6 +115,52 @@ const meals = {
       name: "Double Meat Whataburger (No Mayo, No Cheese)",
       protein: 48,
       calories: 760
+    },
+    {
+      name: "Sweet & Spicy Double (No Mayo)",
+      protein: 45,
+      calories: 850
+    },
+    {
+      name: "Triple Meat Whataburger (No Mayo, No Cheese)",
+      protein: 60,
+      calories: 900
+    }
+  ],
+
+  "Wendy's": [
+    {
+      name: "Dave's Double",
+      protein: 49,
+      calories: 860
+    },
+    {
+      name: "Dave's Double (No Mayo)",
+      protein: 49,
+      calories: 790
+    },
+    {
+      name: "Bacon Double Stack + Jr Cheeseburger Deluxe",
+      protein: 42,
+      calories: 780
+    }
+  ],
+
+  "Burger King": [
+    {
+      name: "Double Whopper (No Mayo)",
+      protein: 42,
+      calories: 850
+    },
+    {
+      name: "2 Double Cheeseburgers",
+      protein: 48,
+      calories: 780
+    },
+    {
+      name: "Whopper + Double Cheeseburger",
+      protein: 47,
+      calories: 890
     }
   ],
 
@@ -124,25 +171,14 @@ const meals = {
       calories: 730
     },
     {
-      name: "Grilled Chicken Club + 5 Count Nuggets",
+      name: "Spicy Chicken Sandwich + 8 Count Nuggets",
       protein: 45,
-      calories: 650
-    }
-  ],
-
-  "Wendy's": [
+      calories: 790
+    },
     {
-      name: "Dave's Double",
-      protein: 49,
-      calories: 860
-    }
-  ],
-
-  "Burger King": [
-    {
-      name: "Double Whopper (No Mayo)",
-      protein: 42,
-      calories: 850
+      name: "12 Count Grilled Nuggets + Chicken Sandwich",
+      protein: 55,
+      calories: 700
     }
   ],
 
@@ -151,46 +187,67 @@ const meals = {
       name: "SuperSONIC Double Cheeseburger (No Mayo)",
       protein: 45,
       calories: 820
+    },
+    {
+      name: "Double SONIC Smasher",
+      protein: 40,
+      calories: 850
+    },
+    {
+      name: "Quarter Pound Double Cheeseburger + Jr Burger",
+      protein: 43,
+      calories: 790
     }
   ]
+
 };
 
 function randomMeal() {
 
-  const selected = document.getElementById("restaurant").value;
+    const selected =
+      document.getElementById("restaurant").value;
 
-  let availableMeals = [];
+    let choices = [];
 
-  if (selected === "Anywhere") {
+    if (selected === "Anywhere") {
 
-    for (let restaurant in meals) {
-      meals[restaurant].forEach(meal => {
-        availableMeals.push({
-          restaurant,
-          ...meal
-        });
-      });
+        for (let restaurant in meals) {
+
+            meals[restaurant].forEach(meal => {
+
+                choices.push({
+                    restaurant,
+                    ...meal
+                });
+
+            });
+
+        }
+
+    } else {
+
+        choices = meals[selected].map(meal => ({
+            restaurant: selected,
+            ...meal
+        }));
+
     }
 
-  } else {
+    const pick =
+      choices[Math.floor(Math.random() * choices.length)];
 
-    availableMeals = meals[selected].map(meal => ({
-      restaurant: selected,
-      ...meal
-    }));
-  }
+    document.getElementById("result").innerHTML = `
+      <div class="restaurant">🍔 ${pick.restaurant}</div>
 
-  const choice =
-    availableMeals[Math.floor(Math.random() * availableMeals.length)];
-
-  document.getElementById("result").innerHTML = `
-      <div class="restaurant">${choice.restaurant}</div>
-      <div class="order">${choice.name}</div>
-      <div class="stats">
-        Protein: <strong>${choice.protein}g</strong><br>
-        Calories: <strong>${choice.calories}</strong>
+      <div class="order">
+        ${pick.name}
       </div>
-  `;
+
+      <div class="stats">
+        💪 Protein: <strong>${pick.protein}g</strong><br><br>
+        🔥 Calories: <strong>${pick.calories}</strong>
+      </div>
+    `;
 }
 
 </script>
