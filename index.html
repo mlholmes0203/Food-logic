@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fast Food Protein Picker</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #f5f5f5;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.1);
+}
+
+h1 {
+    text-align: center;
+}
+
+select,
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 12px;
+    font-size: 16px;
+}
+
+button {
+    cursor: pointer;
+    background: #0a7cff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+}
+
+button:hover {
+    background: #0068dd;
+}
+
+#result {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    background: #eef5ff;
+}
+
+.restaurant {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.order {
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.stats {
+    margin-top: 10px;
+}
+</style>
+</head>
+<body>
+
+<div class="card">
+
+<h1>🍔 Fast Food Picker</h1>
+
+<label><strong>I'm At:</strong></label>
+
+<select id="restaurant">
+    <option value="Anywhere">Anywhere</option>
+    <option value="McDonald's">McDonald's</option>
+    <option value="Whataburger">Whataburger</option>
+    <option value="Chick-fil-A">Chick-fil-A</option>
+    <option value="Wendy's">Wendy's</option>
+    <option value="Burger King">Burger King</option>
+    <option value="Sonic">Sonic</option>
+</select>
+
+<button onclick="randomMeal()">🎲 Random Meal</button>
+
+<div id="result">
+Pick a restaurant and hit Random Meal.
+</div>
+
+</div>
+
+<script>
+
+const meals = {
+  "McDonald's": [
+    {
+      name: "Double Quarter Pounder with Cheese",
+      protein: 48,
+      calories: 740
+    },
+    {
+      name: "McDouble + 6 Piece Nuggets",
+      protein: 43,
+      calories: 680
+    }
+  ],
+
+  "Whataburger": [
+    {
+      name: "Double Meat Whataburger (No Mayo, No Cheese)",
+      protein: 48,
+      calories: 760
+    }
+  ],
+
+  "Chick-fil-A": [
+    {
+      name: "Chicken Sandwich + 8 Count Grilled Nuggets",
+      protein: 50,
+      calories: 730
+    },
+    {
+      name: "Grilled Chicken Club + 5 Count Nuggets",
+      protein: 45,
+      calories: 650
+    }
+  ],
+
+  "Wendy's": [
+    {
+      name: "Dave's Double",
+      protein: 49,
+      calories: 860
+    }
+  ],
+
+  "Burger King": [
+    {
+      name: "Double Whopper (No Mayo)",
+      protein: 42,
+      calories: 850
+    }
+  ],
+
+  "Sonic": [
+    {
+      name: "SuperSONIC Double Cheeseburger (No Mayo)",
+      protein: 45,
+      calories: 820
+    }
+  ]
+};
+
+function randomMeal() {
+
+  const selected = document.getElementById("restaurant").value;
+
+  let availableMeals = [];
+
+  if (selected === "Anywhere") {
+
+    for (let restaurant in meals) {
+      meals[restaurant].forEach(meal => {
+        availableMeals.push({
+          restaurant,
+          ...meal
+        });
+      });
+    }
+
+  } else {
+
+    availableMeals = meals[selected].map(meal => ({
+      restaurant: selected,
+      ...meal
+    }));
+  }
+
+  const choice =
+    availableMeals[Math.floor(Math.random() * availableMeals.length)];
+
+  document.getElementById("result").innerHTML = `
+      <div class="restaurant">${choice.restaurant}</div>
+      <div class="order">${choice.name}</div>
+      <div class="stats">
+        Protein: <strong>${choice.protein}g</strong><br>
+        Calories: <strong>${choice.calories}</strong>
+      </div>
+  `;
+}
+
+</script>
+
+</body>
+</html>
